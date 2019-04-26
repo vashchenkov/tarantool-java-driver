@@ -144,7 +144,7 @@ public class TarantoolClientImpl implements TarantoolClient {
                     throw new TarantoolException("Unknown body Key " + bodyKey);
                 }
             } else if (bodySize == 2) {
-                return new SqlResult(unpacker);
+                return last = new SqlResult(unpacker);
             } else {
                 throw new TarantoolException("Body size is " + bodySize);
             }
@@ -160,6 +160,14 @@ public class TarantoolClientImpl implements TarantoolClient {
         }
         finishQueryWithArguments();
         return getSingleResult();
+    }
+
+    @Override
+    public void consumeLastResult() {
+        if (last == null)
+            return;
+
+        while (last.next()) {}
     }
 
     @Override

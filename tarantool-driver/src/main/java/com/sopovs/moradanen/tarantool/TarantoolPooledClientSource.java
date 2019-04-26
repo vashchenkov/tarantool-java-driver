@@ -111,6 +111,11 @@ public class TarantoolPooledClientSource implements TarantoolClientSource {
                 if (poolClosed) {
                     client.close();
                 } else {
+                    /*
+                     * if execute some query and don`t process result we need forcibly consume last result.
+                     * If we don't, client will throw  an exception "Sending next without reading previous in next call"
+                     */
+                    consumeLastResult();
                     pool.add(client);
                     pool.notify();
                 }
@@ -144,6 +149,11 @@ public class TarantoolPooledClientSource implements TarantoolClientSource {
             } catch (TarantoolException e) {
                 throw closeOnException(e);
             }
+        }
+
+        @Override
+        public void consumeLastResult() {
+            client.consumeLastResult();
         }
 
         @Override

@@ -8,6 +8,8 @@ public interface TarantoolClient extends Closeable {
 
     Result execute();
 
+    void consumeLastResult();
+
     void addBatch();
 
     void executeBatch();
