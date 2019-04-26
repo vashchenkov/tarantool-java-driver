@@ -210,6 +210,11 @@ class TarantoolPooledClientSourceTest {
         }
 
         @Override
+        public void consumeLastResult() {
+
+        }
+
+        @Override
         public void addBatch() {
             throw new TarantoolException("Not implemented!");
         }
